@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -140,7 +141,7 @@ public class Animal{
 			Animal animal = new Animal(txt[0]);
 			animal.setKind(txt[1]);
 			animal.setLegsNumber(Integer.parseInt(txt[2]));
-//			animal.setAge(Integer.parseInt(txt[3]));
+			animal.setAge(Integer.parseInt(txt[3]));
 			return animal;
 		} catch(IOException e) {
 			e.printStackTrace();
@@ -158,6 +159,14 @@ public class Animal{
 			e.printStackTrace();
 			throw new AnimalException("Wyst¹pi³ b³¹d podczas odczytu danych z pliku.");
 		}
+	}
+	
+	public static Animal readFromBinaryFile(String file) {
+		return null;
+	}
+	
+	public static Animal printToBinaryFile() {
+		return null;
 	}
 
 }

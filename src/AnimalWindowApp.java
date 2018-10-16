@@ -1,7 +1,9 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -49,6 +51,8 @@ class AnimalWindowApp extends JFrame implements ActionListener{
 	JButton infoButton = new JButton("O programie");
 	JButton exitButton = new JButton("Zakoñcz aplikacjê");
 	
+	JFileChooser fileChooser = new JFileChooser();
+	
 	public AnimalWindowApp() {
 		this.setTitle("Animal App");
 		this.setSize(210, 400);
@@ -92,6 +96,7 @@ class AnimalWindowApp extends JFrame implements ActionListener{
 		mainPanel.add(infoButton);
 		mainPanel.add(exitButton);
 		
+		
 		this.add(mainPanel);
 		showCurrentAnimal();
 		
@@ -116,7 +121,6 @@ class AnimalWindowApp extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object eventSource = e.getSource();
-		
 		try {
 			if (eventSource == newButton) {
 				animal = AnimalWindowDialog.createNewAnimal(this);
@@ -125,14 +129,23 @@ class AnimalWindowApp extends JFrame implements ActionListener{
 				animal = null;
 			}
 			if (eventSource == saveButton) {
-				String fileName = JOptionPane.showInputDialog("Podaj nazwê pliku");
-				if (fileName == null || fileName.equals("")) return;
-				Animal.printToFile(fileName, animal);
+				File fileName;
+				int returnValue;
+				returnValue = fileChooser.showSaveDialog(null);
+				if(returnValue == JFileChooser.APPROVE_OPTION) {
+					fileName = fileChooser.getSelectedFile();
+					Animal.printToFile(fileName.getAbsolutePath(), animal);
+				}	
+				
 			}
 			if (eventSource == loadButton) {
-				String fileName = JOptionPane.showInputDialog("Podaj nazwê pliku");
-				if (fileName == null || fileName.equals("")) return; 
-				animal = Animal.readFromFile(fileName);
+				String fileName;
+				int returnValue;
+				returnValue = fileChooser.showOpenDialog(null);
+				if(returnValue == JFileChooser.APPROVE_OPTION) {
+					fileName = fileChooser.getSelectedFile().getName();
+							animal = Animal.readFromFile(fileName);
+				}	
 			}
 			if (eventSource == editButton) {
 				if (animal == null) throw new AnimalException("¯adne zwierze nie zosta³o utworzone.");
