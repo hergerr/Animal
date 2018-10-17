@@ -132,7 +132,7 @@ public class Animal implements Serializable{
 	}
 	
 	public static void printToFile(String fileName, Animal animal){
-        try (PrintWriter writer = new PrintWriter(fileName)) { //try-with-resources
+        try (PrintWriter writer = new PrintWriter(fileName + ".txt")) { //try-with-resources
             printToFile(writer, animal);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -163,7 +163,11 @@ public class Animal implements Serializable{
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new AnimalException("Wyst¹pi³ b³¹d podczas odczytu danych z pliku.");
-		}
+		} catch (Exception e) {
+        	e.printStackTrace();
+            throw new AnimalException("Wyst¹pi³ nieznany b³¹d");
+        }
+		
 	}
 	
 	//odczyt z zserializowanego pliku .bin
@@ -180,13 +184,16 @@ public class Animal implements Serializable{
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             throw new AnimalException("Nie znaleziono klasy");
+        } catch (Exception e) {
+        	e.printStackTrace();
+            throw new AnimalException("Wyst¹pi³ nieznany b³¹d");
         }
         
 	}
 	
 	//zapis z serializacj¹ do .bin
 	public static void serializeToBinaryFile( String file, Animal animal) {
-        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file))) {
+        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file + ".bin"))) {
             outputStream.writeObject(animal);
         } catch (IOException e) {
             e.printStackTrace();
