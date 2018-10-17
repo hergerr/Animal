@@ -6,6 +6,9 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -44,14 +47,29 @@ class AnimalWindowApp extends JFrame implements ActionListener{
 	JTextField legsNumberTextField = new JTextField(2);
 	
 	JButton newButton = new JButton("Nowe zwierze");
-	JButton editButton = new JButton("Zmieñ dane ");
+	JButton editButton = new JButton("Zmieñ dane");
 	JButton saveButton = new JButton("Zapisz do pliku");
 	JButton loadButton = new JButton("Wczytaj z pliku");
 	JButton deleteButton = new JButton("Usuñ zwierze");
 	JButton infoButton = new JButton("O programie");
 	JButton exitButton = new JButton("Zakoñcz aplikacjê");
 	
+	JMenuBar menuBar = new JMenuBar();
+	JMenu animalMenu = new JMenu("Zwierzêta");
+	JMenu applicationMenu = new JMenu("Aplikacja");
+
+	JMenuItem newAnimalMenuItem = new JMenuItem("Nowe zwierze");
+	JMenuItem editAnimalMenuItem = new JMenuItem("Zmieñ dane");
+	JMenuItem saveAnimalMenuItem = new JMenuItem("Zapisz do pliku");
+	JMenuItem loadAnimalMenuItem = new JMenuItem("Wczytaj z pliku");
+	JMenuItem deleteAnimalMenuItem = new JMenuItem("Usuñ zwierze");
+	
+	JMenuItem aboutAppMenuItem = new JMenuItem("O programie");
+	JMenuItem exitAppMenuItem = new JMenuItem("Zakoñcz aplikacje");
+	
 	JFileChooser fileChooser = new JFileChooser();
+	
+	JPanel mainPanel = new JPanel();
 	
 	public AnimalWindowApp() {
 		this.setTitle("Animal App");
@@ -74,7 +92,29 @@ class AnimalWindowApp extends JFrame implements ActionListener{
 		infoButton.addActionListener(this);
 		exitButton.addActionListener(this);
 		
-		JPanel mainPanel = new JPanel();
+		newAnimalMenuItem.addActionListener(this);
+		editAnimalMenuItem.addActionListener(this);
+		saveAnimalMenuItem.addActionListener(this);
+		deleteAnimalMenuItem.addActionListener(this);
+		aboutAppMenuItem.addActionListener(this);
+		exitAppMenuItem.addActionListener(this);
+		loadAnimalMenuItem.addActionListener(this);
+
+		menuBar.add(animalMenu);
+		animalMenu.add(newAnimalMenuItem);
+		animalMenu.addSeparator();
+		animalMenu.add(editAnimalMenuItem);
+		animalMenu.addSeparator();
+		animalMenu.add(saveAnimalMenuItem);
+		animalMenu.addSeparator();
+		animalMenu.add(loadAnimalMenuItem);
+		animalMenu.addSeparator();
+		animalMenu.add(deleteAnimalMenuItem);
+		
+		menuBar.add(applicationMenu);
+		applicationMenu.add(aboutAppMenuItem);
+		applicationMenu.addSeparator();
+		applicationMenu.add(exitAppMenuItem);
 		
 		mainPanel.add(kindLabel);
 		mainPanel.add(kindTextField);
@@ -96,7 +136,7 @@ class AnimalWindowApp extends JFrame implements ActionListener{
 		mainPanel.add(infoButton);
 		mainPanel.add(exitButton);
 		
-		
+		this.setJMenuBar(menuBar);
 		this.add(mainPanel);
 		showCurrentAnimal();
 		
@@ -122,13 +162,13 @@ class AnimalWindowApp extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		Object eventSource = e.getSource();
 		try {
-			if (eventSource == newButton) {
+			if (eventSource == newButton || eventSource == newAnimalMenuItem) {
 				animal = AnimalWindowDialog.createNewAnimal(this);
 			}
-			if (eventSource == deleteButton) {
+			if (eventSource == deleteButton|| eventSource == deleteAnimalMenuItem) {
 				animal = null;
 			}
-			if (eventSource == saveButton) {
+			if (eventSource == saveButton || eventSource == saveAnimalMenuItem) {
 				File fileName;
 				int returnValue;
 				returnValue = fileChooser.showSaveDialog(null);
@@ -138,7 +178,7 @@ class AnimalWindowApp extends JFrame implements ActionListener{
 				}	
 				
 			}
-			if (eventSource == loadButton) {
+			if (eventSource == loadButton|| eventSource == loadAnimalMenuItem) {
 				String fileName;
 				int returnValue;
 				returnValue = fileChooser.showOpenDialog(null);
@@ -147,14 +187,14 @@ class AnimalWindowApp extends JFrame implements ActionListener{
 							animal = Animal.readFromFile(fileName);
 				}	
 			}
-			if (eventSource == editButton) {
+			if (eventSource == editButton || eventSource == editAnimalMenuItem) {
 				if (animal == null) throw new AnimalException("¯adne zwierze nie zosta³o utworzone.");
 				AnimalWindowDialog.changeAnimalData(this, animal);
 			}
-			if (eventSource == infoButton) {
+			if (eventSource == infoButton || eventSource == aboutAppMenuItem) {
 				JOptionPane.showMessageDialog(this, GREETING_MESSAGE);
 			}
-			if (eventSource == exitButton) {
+			if (eventSource == exitButton || eventSource == exitAppMenuItem) {
 				System.exit(0);
 			}
 		} catch(AnimalException ex) {
