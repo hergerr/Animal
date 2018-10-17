@@ -1,10 +1,15 @@
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.io.Serializable;
 /*
  *  Program: Operacje na obiektach klasy Animal
  *     Plik: Animal.java
@@ -45,7 +50,7 @@ enum Kind{
 
 
 
-public class Animal{
+public class Animal implements Serializable{
 	private int age;
 	private int legsNumber;
 	private String species;
@@ -161,12 +166,32 @@ public class Animal{
 		}
 	}
 	
-	public static Animal readFromBinaryFile(String file) {
-		return null;
+	//odczyt z zserializowanego pliku .bin
+	public static Animal serializeFromBinaryFile(String file) throws AnimalException{
+        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file))) {
+            Animal animal = (Animal) inputStream.readObject();
+            return animal;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            throw new AnimalException("Wyst¹pi³ b³¹d podczas odczytu danych z pliku.");
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new AnimalException("Wyst¹pi³ b³¹d we/wy");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            throw new AnimalException("Nie znaleziono klasy");
+        }
+        
 	}
 	
-	public static Animal printToBinaryFile() {
-		return null;
+	//zapis z serializacj¹ do .bin
+	public static void serializeToBinaryFile( String file, Animal animal) {
+        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file))) {
+            outputStream.writeObject(animal);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 	}
 
 }

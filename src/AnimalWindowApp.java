@@ -50,6 +50,8 @@ class AnimalWindowApp extends JFrame implements ActionListener{
 	JButton editButton = new JButton("Zmieñ dane");
 	JButton saveButton = new JButton("Zapisz do pliku");
 	JButton loadButton = new JButton("Wczytaj z pliku");
+	JButton saveBinButton = new JButton("Zapisz do .bin");
+	JButton loadBinButton = new JButton("Wczytaj z .bin");
 	JButton deleteButton = new JButton("Usuñ zwierze");
 	JButton infoButton = new JButton("O programie");
 	JButton exitButton = new JButton("Zakoñcz aplikacjê");
@@ -62,6 +64,8 @@ class AnimalWindowApp extends JFrame implements ActionListener{
 	JMenuItem editAnimalMenuItem = new JMenuItem("Zmieñ dane");
 	JMenuItem saveAnimalMenuItem = new JMenuItem("Zapisz do pliku");
 	JMenuItem loadAnimalMenuItem = new JMenuItem("Wczytaj z pliku");
+	JMenuItem saveBinAnimalMenuItem = new JMenuItem("Zapisz do .bin");
+	JMenuItem loadBinAnimalMenuItem = new JMenuItem("Wczytaj z .bin");
 	JMenuItem deleteAnimalMenuItem = new JMenuItem("Usuñ zwierze");
 	
 	JMenuItem aboutAppMenuItem = new JMenuItem("O programie");
@@ -73,7 +77,7 @@ class AnimalWindowApp extends JFrame implements ActionListener{
 	
 	public AnimalWindowApp() {
 		this.setTitle("Animal App");
-		this.setSize(210, 400);
+		this.setSize(210, 450);
 		this.setResizable(false);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setLocationRelativeTo(null);
@@ -88,6 +92,8 @@ class AnimalWindowApp extends JFrame implements ActionListener{
 		editButton.addActionListener(this);
 		saveButton.addActionListener(this);
 		loadButton.addActionListener(this);
+		saveBinButton.addActionListener(this);
+		loadBinButton.addActionListener(this);
 		deleteButton.addActionListener(this);
 		infoButton.addActionListener(this);
 		exitButton.addActionListener(this);
@@ -95,6 +101,8 @@ class AnimalWindowApp extends JFrame implements ActionListener{
 		newAnimalMenuItem.addActionListener(this);
 		editAnimalMenuItem.addActionListener(this);
 		saveAnimalMenuItem.addActionListener(this);
+		saveBinAnimalMenuItem.addActionListener(this);
+		loadBinAnimalMenuItem.addActionListener(this);
 		deleteAnimalMenuItem.addActionListener(this);
 		aboutAppMenuItem.addActionListener(this);
 		exitAppMenuItem.addActionListener(this);
@@ -108,6 +116,10 @@ class AnimalWindowApp extends JFrame implements ActionListener{
 		animalMenu.add(saveAnimalMenuItem);
 		animalMenu.addSeparator();
 		animalMenu.add(loadAnimalMenuItem);
+		animalMenu.addSeparator();
+		animalMenu.add(saveBinAnimalMenuItem);
+		animalMenu.addSeparator();
+		animalMenu.add(loadBinAnimalMenuItem);
 		animalMenu.addSeparator();
 		animalMenu.add(deleteAnimalMenuItem);
 		
@@ -132,6 +144,8 @@ class AnimalWindowApp extends JFrame implements ActionListener{
 		mainPanel.add(deleteButton);
 		mainPanel.add(saveButton);
 		mainPanel.add(loadButton);
+		mainPanel.add(saveBinButton);
+		mainPanel.add(loadBinButton);
 		mainPanel.add(editButton);
 		mainPanel.add(infoButton);
 		mainPanel.add(exitButton);
@@ -169,12 +183,12 @@ class AnimalWindowApp extends JFrame implements ActionListener{
 				animal = null;
 			}
 			if (eventSource == saveButton || eventSource == saveAnimalMenuItem) {
-				File fileName;
+				String fileName;
 				int returnValue;
 				returnValue = fileChooser.showSaveDialog(null);
 				if(returnValue == JFileChooser.APPROVE_OPTION) {
-					fileName = fileChooser.getSelectedFile();
-					Animal.printToFile(fileName.getAbsolutePath(), animal);
+					fileName = fileChooser.getSelectedFile().getAbsolutePath();
+					Animal.printToFile(fileName, animal);
 				}	
 				
 			}
@@ -183,9 +197,29 @@ class AnimalWindowApp extends JFrame implements ActionListener{
 				int returnValue;
 				returnValue = fileChooser.showOpenDialog(null);
 				if(returnValue == JFileChooser.APPROVE_OPTION) {
-					fileName = fileChooser.getSelectedFile().getName();
-							animal = Animal.readFromFile(fileName);
+					fileName = fileChooser.getSelectedFile().getAbsolutePath();
+					animal = Animal.readFromFile(fileName);
 				}	
+			}
+			
+			if (eventSource == saveBinButton || eventSource == saveBinAnimalMenuItem) {
+				System.out.println("KLIK");
+				String fileName;
+				int returnValue;
+				returnValue = fileChooser.showSaveDialog(null);
+				if(returnValue == JFileChooser.APPROVE_OPTION) {
+					fileName = fileChooser.getSelectedFile().getAbsolutePath();
+					Animal.serializeToBinaryFile(fileName, animal);
+				}
+			}
+			if(eventSource == loadBinButton || eventSource == loadBinAnimalMenuItem) {
+				String fileName;
+				int returnValue;
+				returnValue = fileChooser.showOpenDialog(null);
+				if(returnValue == JFileChooser.APPROVE_OPTION) {
+					fileName = fileChooser.getSelectedFile().getAbsolutePath();
+					animal = Animal.serializeFromBinaryFile(fileName);
+				}
 			}
 			if (eventSource == editButton || eventSource == editAnimalMenuItem) {
 				if (animal == null) throw new AnimalException("¯adne zwierze nie zosta³o utworzone.");
@@ -197,6 +231,7 @@ class AnimalWindowApp extends JFrame implements ActionListener{
 			if (eventSource == exitButton || eventSource == exitAppMenuItem) {
 				System.exit(0);
 			}
+
 		} catch(AnimalException ex) {
 			JOptionPane.showMessageDialog(this, ex.getMessage(), "B³¹d", JOptionPane.ERROR_MESSAGE);
 		}
