@@ -1,5 +1,4 @@
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -15,6 +14,9 @@ import java.io.Serializable;
  *     Plik: Animal.java
  *           definicja typu wyliczeniowego Kind
  *           definicja publicznej klasy Animal
+ *           
+ *           Dodatkowo zosta³a wyposa¿ona w mo¿liwosc serializacji z zapisem do pliku
+ *           binarnego
  *
  *    Autor: Tymoteusz Frankiewicz
  *     Data:  pazdziernik 2018 r.
@@ -51,6 +53,7 @@ enum Kind{
 
 
 public class Animal implements Serializable{
+	private static final long serialVersionUID = 3L;
 	private int age;
 	private int legsNumber;
 	private String species;

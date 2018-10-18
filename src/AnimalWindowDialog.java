@@ -14,15 +14,16 @@ import javax.swing.JTextField;
 /*
  * Program: Aplikacja okienkowa z GUI, która umo¿liwia testowanie
  *          operacji wykonywanych na obiektach klasy Animal.
- *    Plik: PersonWindowDialog.java
+ *          
+ *    Plik: AnimalWindowDialog.java
  *
  *   Autor: Tymoteusz Frankiewicz
  *    Data: pazdziernik 2018 r.
  *
  *
  * Klasa AmimalWindowDialog implementuje pomocnicze okna dialogowe
- * umo¿liwiaj¹ce utworzenie i wype³nienie danymi nowego obiektu klasy Person
- * oraz modyfikacjê danych dla istniej¹cego obiektu klasy Person.
+ * umo¿liwiaj¹ce utworzenie i wype³nienie danymi nowego obiektu klasy Animal
+ * oraz modyfikacjê danych dla istniej¹cego obiektu klasy Animal.
  */
 public class AnimalWindowDialog extends JDialog implements ActionListener {
 	private static final long serialVersionUID = 1L;

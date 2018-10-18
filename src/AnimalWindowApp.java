@@ -1,6 +1,5 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -16,10 +15,19 @@ import javax.swing.JTextField;
 /*
  * Program: Aplikacja okienkowa z GUI, która umo¿liwia testowanie
  *          operacji wykonywanych na obiektach klasy Animal.
+ *          
+ *          Istnieje mo¿liwoœæ wyboru lokalizacji
+ *          plików.
+ *          
+ *          Aplikacje posiada takze górny pasek menu
+ *          
+ *          
  *    Plik: AnimalWindowApp.java
  *
  *   Autor: Tymoteusz Frankiewicz
  *    Data: pazdziernik 2018 r.
+ *    
+ *   
  */
 
 class AnimalWindowApp extends JFrame implements ActionListener{
@@ -203,7 +211,6 @@ class AnimalWindowApp extends JFrame implements ActionListener{
 			}
 			
 			if (eventSource == saveBinButton || eventSource == saveBinAnimalMenuItem) {
-				System.out.println("KLIK");
 				String fileName;
 				int returnValue;
 				returnValue = fileChooser.showSaveDialog(null);
